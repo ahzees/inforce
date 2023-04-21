@@ -26,3 +26,7 @@ class VoteSerializer(serializers.ModelSerializer):
 
     def get_count_of_votes(self, obj):
         return obj.get_count_of_votes()
+
+
+class VotebyUserSerializer(serializers.Serializer):
+    menu = serializers.IntegerField()

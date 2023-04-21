@@ -39,6 +39,8 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """Create custom user model"""
+
     email = models.EmailField("email address", unique=True, null=False)
     first_name = models.CharField("first_name", max_length=30)
     last_name = models.CharField("last_name", max_length=30)
@@ -61,6 +63,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label: str) -> bool:
         return True
 
-    # def create(self,**kwargs):
-    #     x = CustomUser.objects.create(**kwargs)
-    #     return x
+    def vote(self, menu, Vote):
+        if vote := Vote.objects.filter(menu__pk=menu).first():
+            vote.count_of_votes.add(self)
+            return True

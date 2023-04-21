@@ -6,6 +6,8 @@ from django.db import models
 
 # Create your models here.
 class Restaurant(models.Model):
+    """Restaurant model"""
+
     name = models.CharField(max_length=255, unique=True)
 
     def get_current_menu(self):
@@ -15,6 +17,8 @@ class Restaurant(models.Model):
 
 
 class Menu(models.Model):
+    """Menu model"""
+
     restaurant = models.ForeignKey(
         Restaurant,
         related_name="menu",
@@ -32,6 +36,8 @@ class Menu(models.Model):
 
 
 class Vote(models.Model):
+    """Vote model"""
+
     menu = models.ForeignKey(Menu, related_name="vote", on_delete=models.PROTECT)
     count_of_votes = models.ManyToManyField(CustomUser, related_name="votes")
     created_at = models.DateField(auto_now=True)

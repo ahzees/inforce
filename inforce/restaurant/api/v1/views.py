@@ -1,6 +1,7 @@
 import datetime
 
 from django.shortcuts import get_object_or_404, render
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status, views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,13 +12,17 @@ from . import serializers as sz
 # Create your views here.
 
 
-class RestrauntApiView(generics.CreateAPIView):
+class CreateRestaurantApiView(generics.CreateAPIView):
+    """Add Restaurant"""
+
     serializer_class = sz.RestaurantSerializer
     queryset = Restaurant.objects.all()
     permission_classes = [IsAuthenticated]
 
 
-class MenuApiView(generics.CreateAPIView):
+class CreateMenuApiView(generics.CreateAPIView):
+    """Upload Menu"""
+
     serializer_class = sz.MenuSerializer
     queryset = Menu.objects.all()
     permission_classes = [IsAuthenticated]
@@ -32,7 +37,9 @@ class MenuApiView(generics.CreateAPIView):
         )
 
 
-class CurrentDayMenuApiView(views.APIView):
+class GetCurrentDayMenuApiView(views.APIView):
+    """Get a current menu"""
+
     serializer_class = sz.MenuSerializer
 
     def get(self, request, pk):
@@ -46,6 +53,19 @@ class CurrentDayMenuApiView(views.APIView):
         )
 
 
-class VoteForMenuApiView(generics.CreateAPIView):
-    serializer_class = sz.VoteSerializer
-    queryset = Vote.objects.all()
+@extend_schema(request=sz.VotebyUserSerializer)
+class CreateVoteForMenuApiView(views.APIView):
+    """Vote for menu"""
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        print(request.data)
+        if request.user.vote(request.data["menu"], Vote):
+            return Response(
+                {"status": "You have voted succesfuly"}, status=status.HTTP_200_OK
+            )
+        return Response(
+            {"status": "error - vote does`nt exist"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
