@@ -9,16 +9,17 @@ repos:
     rev: 22.10.0
     hooks:
         -   id: black
--   repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+-   repo: https://github.com/life4/flakehell
+    rev: v.0.7.1
     hooks:
-        -   id: flake8
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.991
-    hooks:
-        -   id: mypy
+        -   id: flakehell
+            name: flakehell
+            language: system
+            types: ["file", "text"]
+            files: \.(ipynb|md|py|rst|yaml|yml)$
+            entry: poetry run flakehell lint
 -   repo: https://github.com/pycqa/isort
-    rev: 5.5.4
+    rev: 5.12.0
     hooks:
         -   id: isort
             files: "\\.(py)$"
