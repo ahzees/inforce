@@ -27,7 +27,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -92,6 +92,16 @@ DATABASES = {
         "PORT": "",
     }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.environ["DB_NAME"],
+#         "USER": os.environ["DB_USER"],
+#         "PASSWORD": os.environ["DB_PASSWORD"],
+#         "HOST": os.environ["DB_HOST"],
+#         "PORT": os.environ["DB_PORT"],
+#     }
+# }
 
 
 # Password validation
@@ -141,6 +151,13 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Test Project API",
+    "DESCRIPTION": "",
+    "VERSION": "0.1.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 SIMPLE_JWT = {

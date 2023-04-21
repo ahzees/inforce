@@ -12,6 +12,11 @@ from . import serializers as sz
 # Create your views here.
 
 
+@extend_schema(
+    description="This URL is used to create a new restaurant.\
+        It requires an authenticated user and expects a POST\
+        request with a serialized restaurant object."
+)
 class CreateRestaurantApiView(generics.CreateAPIView):
     """Add Restaurant"""
 
@@ -20,6 +25,11 @@ class CreateRestaurantApiView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
+@extend_schema(
+    description="This URL is used to upload a new menu. \
+        It requires an authenticated user and expects a POST\
+        request with a serialized menu object."
+)
 class CreateMenuApiView(generics.CreateAPIView):
     """Upload Menu"""
 
@@ -33,27 +43,38 @@ class CreateMenuApiView(generics.CreateAPIView):
             serializer.save()
             return Response({"status": "created"}, status=status.HTTP_201_CREATED)
         return Response(
-            {"status": "error - Invalid data"}, status=status.HTTP_406_NOT_ACCEPTABLE
+            {"status": "error - Invalid data"},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
         )
 
 
+@extend_schema(
+    description="This URL is used to retrieve the menu of a specific\
+        restaurant for the current day. It expects a GET request\
+        with the primary key (pk) of the restaurant in the URL path."
+)
 class GetCurrentDayMenuApiView(views.APIView):
     """Get a current menu"""
 
     serializer_class = sz.MenuSerializer
 
-    def get(self, request, pk):
+    def get(self, pk):
         instance = get_object_or_404(Restaurant, pk=pk)
         if instance := instance.get_current_menu():
             return Response(
                 self.serializer_class(instance=instance).data, status=status.HTTP_200_OK
             )
         return Response(
-            {"error": "No avaliable menu"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            {"error": "No avaliable menu"}, status=status.HTTP_404_NOT_FOUND
         )
 
 
-@extend_schema(request=sz.VotebyUserSerializer)
+@extend_schema(
+    request=sz.VotebyUserSerializer,
+    description=" This URL is used to vote for a menu. It requires\
+                an authenticated user and expects a POST request with \
+                aserialized object containing the ID of the menu being voted for.",
+)
 class CreateVoteForMenuApiView(views.APIView):
     """Vote for menu"""
 
@@ -66,10 +87,15 @@ class CreateVoteForMenuApiView(views.APIView):
             )
         return Response(
             {"status": "error - vote does`nt exist"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status=status.HTTP_404_NOT_FOUND,
         )
 
 
+@extend_schema(
+    description="This URL is used to retrieve the current day's \
+                voting results. It expects a GET request and returns a \
+                list of all the votes cast for the menus available on that day."
+)
 class GetCurrentVoteForMenuApiView(generics.ListAPIView):
     """Get a list of all votes for the current day"""
 

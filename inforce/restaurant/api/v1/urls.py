@@ -20,6 +20,6 @@ urlpatterns = [
     path(
         "v1/vote/current/",
         views.GetCurrentVoteForMenuApiView.as_view(),
-        name="current_vote",
+        name="all_current_vote",
     ),  # getting result of current day`s voting
 ]
