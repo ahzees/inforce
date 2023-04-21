@@ -88,7 +88,7 @@ class CreateVoteForMenuApiView(views.APIView):
                 {"status": "You have voted succesfuly"}, status=status.HTTP_200_OK
             )
         return Response(
-            {"status": "error - vote does`nt exist"},
+            {"status": "error - menu does`nt exist"},
             status=status.HTTP_404_NOT_FOUND,
         )
 
