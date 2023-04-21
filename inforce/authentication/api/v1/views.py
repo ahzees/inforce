@@ -18,5 +18,6 @@ class CreateCustomUserApiView(generics.CreateAPIView):
             serializer.save()
             return Response({"status": "created"}, status=status.HTTP_201_CREATED)
         return Response(
-            {"status": "error - Invalid data"}, status=status.HTTP_406_NOT_ACCEPTABLE
+            {"status": "error - Invalid data"},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
         )

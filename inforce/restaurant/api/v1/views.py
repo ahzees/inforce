@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from restaurant.models import Menu, Restaurant, Vote
 
 from . import serializers as sz
+from .services import vote_for_menu
 
 # Create your views here.
 
@@ -81,7 +82,8 @@ class CreateVoteForMenuApiView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        if request.user.vote(request.data["menu"], Vote):
+        access = vote_for_menu(request.data["menu"], request.user.pk)
+        if access:
             return Response(
                 {"status": "You have voted succesfuly"}, status=status.HTTP_200_OK
             )
