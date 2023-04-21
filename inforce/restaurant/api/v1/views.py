@@ -60,7 +60,6 @@ class CreateVoteForMenuApiView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        print(request.data)
         if request.user.vote(request.data["menu"], Vote):
             return Response(
                 {"status": "You have voted succesfuly"}, status=status.HTTP_200_OK
@@ -69,3 +68,15 @@ class CreateVoteForMenuApiView(views.APIView):
             {"status": "error - vote does`nt exist"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
+
+class GetCurrentVoteForMenuApiView(generics.ListAPIView):
+    """Get a list of all votes for the current day"""
+
+    serializer_class = sz.VoteSerializer
+    queryset = Vote.objects.all()
+
+    def get_queryset(self):
+        date_now = datetime.datetime.now().date()
+        items = Vote.objects.filter(menu__date=date_now).all()
+        return items

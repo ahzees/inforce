@@ -17,7 +17,9 @@ urlpatterns = [
     path(
         "v1/menu/vote/", views.CreateVoteForMenuApiView.as_view(), name="vote_for_menu"
     ),  # vote for menu
-    # path(
-    #     "v1/vote/current/", views.GetVoteForMenuApiView.as_view(), name="current_vote"
-    # ),  # getting result of current day`s voting
+    path(
+        "v1/vote/current/",
+        views.GetCurrentVoteForMenuApiView.as_view(),
+        name="current_vote",
+    ),  # getting result of current day`s voting
 ]
