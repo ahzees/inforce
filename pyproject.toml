@@ -22,6 +22,7 @@ djangorestframework = "^3.14.0"
 psycopg2-binary = "^2.9.6"
 flakehell = "0.7.1"
 flake8 = "3.9.0"
+drf-spectacular = "^0.26.2"
 
 [tool.flakehell]
 max_line_length = 88
