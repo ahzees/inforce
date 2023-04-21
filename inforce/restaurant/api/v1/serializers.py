@@ -1,14 +1,28 @@
 from rest_framework import serializers
-from restaurant.models import Menu, Restaurant
+from restaurant.models import Menu, Restaurant, Vote
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
-        fields = ["name", "votes"]
+        fields = [
+            "pk",
+            "name",
+        ]
 
 
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
-        fields = ["restaurant", "date", "info"]
+        fields = ["pk", "restaurant", "date", "info"]
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    count_of_votes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Vote
+        fields = ["pk", "menu", "count_of_votes"]
+
+    def get_count_of_votes(self, obj):
+        return obj.get_count_of_votes()
