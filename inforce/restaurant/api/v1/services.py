@@ -1,5 +1,6 @@
 import datetime
 
+import pytz
 from django.contrib.auth import get_user_model
 from restaurant.models import Menu, Vote
 
@@ -22,7 +23,9 @@ def vote_for_menu(menu_id: int, user_id: int):
 
 
 def get_current_menu(restaurant_pk):
-    date_now = datetime.datetime.now().date()
+    tz = pytz.timezone("Europe/Kiev")
+    dt = datetime.datetime.now(tz)
+    date_now = dt.date()
     if x := Menu.objects.filter(restaurant__pk=restaurant_pk, date=date_now).first():
         return x
     return None

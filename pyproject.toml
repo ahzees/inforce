@@ -8,12 +8,12 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.8.10"
 djangorestframework-simplejwt = "^5.2.2"
+pytest-dotenv = "^0.5.2"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
 pre-commit = "^3.0.4"
-pytest = "^7.2.1"
 isort = "^5.12.0"
 commitizen = "^2.41.0"
 django-dotenv = "^1.4.2"
@@ -23,9 +23,14 @@ psycopg2-binary = "^2.9.6"
 flakehell = "0.7.1"
 flake8 = "3.9.0"
 drf-spectacular = "^0.26.2"
+pytest-django = "^4.5.2"
 
 [tool.flakehell]
 max_line_length = 88
+
+[tool.pytest.ini_options]
+pythonpath = "inforce"
+DJANGO_SETTINGS_MODULE = "inforce.settings"
 
 [tool.isort]
 profile = "black"

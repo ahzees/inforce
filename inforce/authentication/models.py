@@ -1,5 +1,4 @@
 # Create your models here.
-from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
@@ -17,15 +16,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = "email"
     objects = CustomUserManager()
 
     def __str__(self):
         return self.email
-
-    def vote(self, menu, Vote):
-        if vote := Vote.objects.filter(menu__pk=menu).first():
-            vote.count_of_votes.add(self)
-            return True
