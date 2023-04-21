@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from restaurant.models import Menu, Restaurant, Vote
 
 from . import serializers as sz
-from .services import vote_for_menu
+from .services import get_current_menu, vote_for_menu
 
 # Create your views here.
 
@@ -59,9 +59,9 @@ class GetCurrentDayMenuApiView(views.APIView):
 
     serializer_class = sz.MenuSerializer
 
-    def get(self, pk):
+    def get(self, request, pk):
         instance = get_object_or_404(Restaurant, pk=pk)
-        if instance := instance.get_current_menu():
+        if instance := get_current_menu(instance.pk):
             return Response(
                 self.serializer_class(instance=instance).data, status=status.HTTP_200_OK
             )
