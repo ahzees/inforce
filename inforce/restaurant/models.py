@@ -10,11 +10,6 @@ class Restaurant(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
 
-    def get_current_menu(self):
-        date_now = datetime.datetime.now().date()
-        if x := Menu.objects.filter(restaurant__pk=self.pk, date=date_now).first():
-            return x
-
 
 class Menu(models.Model):
     """Menu model"""

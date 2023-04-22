@@ -1,5 +1,7 @@
 import datetime
 
+import pytz
+from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404, render
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status, views
@@ -8,6 +10,7 @@ from rest_framework.response import Response
 from restaurant.models import Menu, Restaurant, Vote
 
 from . import serializers as sz
+from .services import get_current_menu, vote_for_menu
 
 # Create your views here.
 
@@ -40,8 +43,17 @@ class CreateMenuApiView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "created"}, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response(
+                    {"status": "created", "menu_id": serializer.data["pk"]},
+                    status=status.HTTP_201_CREATED,
+                )
+            except IntegrityError:
+                return Response(
+                    {"status": "error - menu have already"},
+                    status=status.HTTP_409_CONFLICT,
+                )
         return Response(
             {"status": "error - Invalid data"},
             status=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -58,9 +70,9 @@ class GetCurrentDayMenuApiView(views.APIView):
 
     serializer_class = sz.MenuSerializer
 
-    def get(self, pk):
+    def get(self, request, pk):
         instance = get_object_or_404(Restaurant, pk=pk)
-        if instance := instance.get_current_menu():
+        if instance := get_current_menu(instance.pk):
             return Response(
                 self.serializer_class(instance=instance).data, status=status.HTTP_200_OK
             )
@@ -81,12 +93,13 @@ class CreateVoteForMenuApiView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        if request.user.vote(request.data["menu"], Vote):
+        access = vote_for_menu(request.data["menu"], request.user.pk)
+        if access:
             return Response(
                 {"status": "You have voted succesfuly"}, status=status.HTTP_200_OK
             )
         return Response(
-            {"status": "error - vote does`nt exist"},
+            {"status": "error"},
             status=status.HTTP_404_NOT_FOUND,
         )
 
@@ -103,6 +116,8 @@ class GetCurrentVoteForMenuApiView(generics.ListAPIView):
     queryset = Vote.objects.all()
 
     def get_queryset(self):
-        date_now = datetime.datetime.now().date()
+        tz = pytz.timezone("Europe/Kiev")
+        dt = datetime.datetime.now(tz)
+        date_now = dt.date()
         items = Vote.objects.filter(menu__date=date_now).all()
         return items

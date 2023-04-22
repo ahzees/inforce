@@ -1,7 +1,8 @@
 .python-version
 /*/**/__pycache__
-/*/**/__init__.py
 CHANGELOG.md
 .mypy_cache
 migrations
 .env
+.pytest_cache
+.DS_Store
