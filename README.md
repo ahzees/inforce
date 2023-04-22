@@ -6,7 +6,7 @@
 
 
 
-#### Firstly, you have to clone gut hub repo
+#### Firstly, you have to clone the git hub repo
 <br></br>
 ```{r test-python, engine='python'}
 git clone git@github.com:ahzees/inforce.git
