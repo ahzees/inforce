@@ -40,6 +40,10 @@ jobs:
       - name: Install project
         run: poetry install --no-interaction
 
+      - name: 'Create env file'
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+
       - name: Run linters
         run: |
           poetry run pre-commit run -a --show-diff-on-failure
