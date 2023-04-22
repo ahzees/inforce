@@ -11,7 +11,7 @@
 ```{r test-python, engine='python'}
 git clone git@github.com:ahzees/inforce.git
 ```
-### Open project directory and run docker-compose
+### Open project directory and run docker-compose. You need to have an .env file in django-project folder
 <br></br>
 ```{r test-python, engine='python'}
 docker-compose build
