@@ -14,3 +14,6 @@ COPY poetry.lock pyproject.toml /inforce/
 
 RUN poetry config virtualenvs.create false
 RUN poetry install
+
+
+CMD ["./start.sh"]

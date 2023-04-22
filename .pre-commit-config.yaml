@@ -28,7 +28,13 @@ repos:
     hooks:
       - id: pytest-check
         name: pytest-check
-        entry: pytest
+        entry: sh
+        args:
+          - -c
+          - |
+            pip install -U pytest
+            cd inforce
+            pytest
         language: system
         pass_filenames: false
         always_run: true

@@ -1,7 +1,15 @@
 import datetime
+import os
 
+import django
 import pytest
 import pytz
+from dotenv import load_dotenv
+
+load_dotenv()
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inforce.settings")
+django.setup()
+
 from authentication.models import CustomUser
 from django.urls import reverse
 from rest_framework.test import APIClient
