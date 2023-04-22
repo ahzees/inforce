@@ -24,20 +24,6 @@ repos:
         -   id: isort
             files: "\\.(py)$"
             args: [--settings-path=pyproject.toml]
--   repo: local
-    hooks:
-      - id: pytest-check
-        name: pytest-check
-        entry: sh
-        args:
-          - -c
-          - |
-            pip install -U pytest
-            cd inforce
-            pytest
-        language: system
-        pass_filenames: false
-        always_run: true
 -   repo: https://github.com/commitizen-tools/commitizen
     rev: v2.19.0
     hooks:
