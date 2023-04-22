@@ -5,8 +5,6 @@ services:
     image: postgres:latest
     ports:
       - 6321:5432
-    env_file:
-      - ./inforce/.env
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
