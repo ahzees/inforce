@@ -1,4 +1,4 @@
-# ISI TEST TASK
+# Inforce test task
 
 
 
@@ -6,58 +6,23 @@
 
 
 
-#### Firstly, you have to install poetry using this command
+#### Firstly, you have to clone gut hub repo
 <br></br>
 ```{r test-python, engine='python'}
-pip install poetry
+git clone git@github.com:ahzees/inforce.git
 ```
-<br></br>
-### Then, you have to copy the github repo using
+### Open project directory and run docker-compose
 <br></br>
 ```{r test-python, engine='python'}
-git clone git@github.com:ahzees/isi_test_task.git
+docker-compose build
 ```
-<br></br>
-### Install poetry dependecies. You must be at the root of the project
+### And
 <br></br>
 ```{r test-python, engine='python'}
-poetry install
+docker-compose up
 ```
-<br></br>
-### Run poetry shell
+### Now, server is ready so you can open the api documentation
 <br></br>
 ```{r test-python, engine='python'}
-poetry shell
+http://127.0.0.1:8000/api/schema/swagger-ui/
 ```
-<br></br>
-### Go to the isi_test_task/
-<br></br>
-```{r test-python, engine='python'}
-cd isi_test_task/
-```
-<br></br>
-### Run migrations
-<br></br>
-```{r test-python, engine='python'}
-python manage.py makemigrations chat
-python manage.py migrate
-```
-<br></br>
-### Load dump.json
-<br></br>
-```{r test-python, engine='python'}
-python manage.py loaddata dump.json
-```
-<br></br>
-### Run the server
-<br></br>
-```{r test-python, engine='python'}
-python manage.py runserver
-```
-<br></br>
-### To view api documentation
-<br></br>
-```{r test-python, engine='python'}
-http://127.0.0.1:8000/api/schema/swagger-ui/#/
-```
-<br></br>
